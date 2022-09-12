@@ -26,38 +26,34 @@ const loseGame = () => {
     score.textContent = 0;
 }
 
+const winGame = () => {
+    message.textContent = 'Correct Number!';
+    body.classList.add('win');
+    number.classList.add('win');
+    number.textContent = randomNumber;
+
+    // Check / Update HighScore
+    if (currentScore > currentHighscore) {
+        currentHighscore = currentScore;
+        highScore.textContent = currentHighscore;
+    }
+}
+
 const checkGuess = (event) => {
     const myGuess = Number(guess.value);
     console.log(`Guess: ${myGuess}`);
     
     if (!myGuess) { // No Input
         message.textContent = 'No Number!'
-    } else if (myGuess === randomNumber) { // Player Wins
-        message.textContent = 'Correct Number!';
-        body.classList.add('win');
-        number.classList.add('win');
-        number.textContent = randomNumber;
-
-        // Check / Update HighScore
-        if (currentScore > currentHighscore) {
-            currentHighscore = currentScore;
-            highScore.textContent = currentHighscore;
-        }
-    } else if (myGuess > randomNumber) { // Guess is too high
+    } else if (myGuess === randomNumber) { // Player Chooses Right
+        winGame();
+    } else if (myGuess !== randomNumber) { // Player Chooses Wrong
         if (currentScore > 1) {
-            message.textContent = 'Guess is Too HIGH!'
-            minusScore();
+            message.textContent = (myGuess > randomNumber) ? 'Guess is Too HIGH!' : 'Guess is Too LOW!'
         } else {
             loseGame();
         }
-    } else if (myGuess < randomNumber) { // Guess is too low
-        if (currentScore > 1) {
-            message.textContent = 'Guess is Too LOW!'
-            minusScore();
-        } else {
-            loseGame();
-        }
-    }
+    } 
 }
 
 const restartGame = () => {
